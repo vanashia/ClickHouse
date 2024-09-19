@@ -179,7 +179,7 @@ void registerStorageKafka(StorageFactory & factory)
                 "See also https://clickhouse.com/docs/integrations/kafka/kafka-table-engine#tuning-performance",
                 max_consumers);
         }
-        else if (num_consumers < 1)
+        if (num_consumers < 1)
         {
             throw Exception(ErrorCodes::BAD_ARGUMENTS, "Number of consumers can not be lower than 1");
         }
@@ -326,11 +326,9 @@ void drainConsumer(
             {
                 break;
             }
-            else
-            {
-                LOG_ERROR(log, "Error during draining: {}", error);
-                error_handler(error);
-            }
+
+            LOG_ERROR(log, "Error during draining: {}", error);
+            error_handler(error);
         }
 
         // i don't stop draining on first error,

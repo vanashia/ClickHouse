@@ -34,7 +34,7 @@ namespace
             {
                 return false;
             }
-            else if (is_any_table)
+            if (is_any_table)
             {
                 res_table_name = RowPolicyName::ANY_TABLE_MARK;
             }

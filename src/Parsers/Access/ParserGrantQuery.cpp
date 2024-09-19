@@ -230,7 +230,7 @@ namespace
 
             if (!element.any_column)
                 throw Exception(ErrorCodes::INVALID_GRANT, "{} cannot be granted on the column level", old_flags.toString());
-            else if (!element.any_table)
+            if (!element.any_table)
                 throw Exception(ErrorCodes::INVALID_GRANT, "{} cannot be granted on the table level", old_flags.toString());
             else if (!element.any_database)
                 throw Exception(ErrorCodes::INVALID_GRANT, "{} cannot be granted on the database level", old_flags.toString());

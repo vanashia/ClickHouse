@@ -468,8 +468,7 @@ void ZooKeeper::connect(
         if (dns_error)
             throw zkutil::KeeperException::fromMessage(
                 Coordination::Error::ZCONNECTIONLOSS, "Cannot resolve any of provided ZooKeeper hosts due to DNS error");
-        else
-            throw zkutil::KeeperException::fromMessage(Coordination::Error::ZCONNECTIONLOSS, "Cannot use any of provided ZooKeeper nodes");
+        throw zkutil::KeeperException::fromMessage(Coordination::Error::ZCONNECTIONLOSS, "Cannot use any of provided ZooKeeper nodes");
     }
 
     WriteBufferFromOwnString fail_reasons;
@@ -572,10 +571,8 @@ void ZooKeeper::connect(
         message << fail_reasons.str() << "\n";
         throw Exception(Error::ZCONNECTIONLOSS, "All connection tries failed while connecting to ZooKeeper. nodes: {}", message.str());
     }
-    else
-    {
-        LOG_INFO(log, "Connected to ZooKeeper at {} with session_id {}{}", socket.peerAddress().toString(), session_id, fail_reasons.str());
-    }
+
+    LOG_INFO(log, "Connected to ZooKeeper at {} with session_id {}{}", socket.peerAddress().toString(), session_id, fail_reasons.str());
 }
 
 
@@ -1248,7 +1245,7 @@ std::optional<String> ZooKeeper::tryGetSystemZnode(const std::string & path, con
         LOG_TRACE(log, "Failed to get {}", description);
         return std::nullopt;
     }
-    else if (response.error != Coordination::Error::ZOK)
+    if (response.error != Coordination::Error::ZOK)
     {
         throw Exception(response.error, "Failed to get {}", description);
     }
@@ -1555,8 +1552,7 @@ std::optional<int8_t> ZooKeeper::getConnectedNodeIdx() const
     int8_t res = original_index.load();
     if (res == -1)
         return std::nullopt;
-    else
-        return res;
+    return res;
 }
 
 String ZooKeeper::getConnectedHostPort() const
@@ -1564,8 +1560,7 @@ String ZooKeeper::getConnectedHostPort() const
     auto idx = getConnectedNodeIdx();
     if (idx)
         return args.hosts[*idx];
-    else
-        return "";
+    return "";
 }
 
 int32_t ZooKeeper::getConnectionXid() const
