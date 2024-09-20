@@ -123,7 +123,6 @@ Chunk NATSSource::generate()
         }
 
         throw std::move(e);
-       
     };
 
     StreamingFormatExecutor executor(non_virtual_header, input_format, on_error);

@@ -137,7 +137,6 @@ Chunk KafkaSource::generateImpl()
             consumer->currentOffset());
         consumer->setExceptionInfo(e.message());
         throw std::move(e);
-       
     };
 
     StreamingFormatExecutor executor(non_virtual_header, input_format, std::move(on_error));
